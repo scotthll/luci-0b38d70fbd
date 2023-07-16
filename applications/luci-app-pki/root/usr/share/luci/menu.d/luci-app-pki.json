@@ -1,0 +1,10 @@
+{
+  "admin/network/pki": {
+    "title": "PKI配置",
+    "order": 2,
+    "action": {
+      "type": "view",
+      "path": "pki/index"
+    }
+  }
+}

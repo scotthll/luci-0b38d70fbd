@@ -1,0 +1,534 @@
+<%+header%>
+
+<link rel="stylesheet" href="<%=resource%>/view/ipsec/ipsec.css">
+
+<div id="view">
+    <div id="cbi-dynamic-tunnel" class="cbi-map">
+        <h2 name="content">密钥协商隧道策略</h2>
+        <div class="cbi-map-descr"></div>
+    </div>
+
+    <div class="cbi-map-tabbed">
+        <div id="cbi-tunnel-step-1" class="cbi-section cbi-tblsection" data-tab="step-1" data-tab-title="第一阶段" data-tab-active="true">
+            <h3>第一阶段</h3>
+            <div class="cbi-section-node" data-section-id="step-1">
+                <div class="cbi-value" id="tunnel-name-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-name">隧道名称</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="tunnel-name" type="text" class="cbi-input-text" value="" placeholder="" maxlength="31" required>
+                        </div>
+                        <div class="cbi-value-description">
+                            限制字节数不能超过31个字符。不能包含除“-”或“_”之外的特殊字符。不能输入中文。
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value" id="tunnel-local-address-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-local-address">本端地址</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="tunnel-local-address" type="text" class="cbi-input-text" value="" placeholder="" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value" id="tunnel-remote-address-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-remote-address">远端地址</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="tunnel-remote-address" type="text" class="cbi-input-text" value="" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value" id="tunnel-ike-algorithm-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-ike-algorithm-title">ike算法套件</label>
+                    <div class="cbi-value-field">
+                        <div class="h100 pt-6">
+                            <label id="tunnel-ike-algorithm-title"></label>
+                            <button class="pointer" id="btn-tunnel-ike-algorithm">算法列表</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="cbi-value" id="tunnel-sign-cert-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-sign-cert">签名证书</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <textarea id="tunnel-sign-cert" class="cbi-input-textarea w100" rows="2" required></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value" id="tunnel-encrypt-cert-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-encrypt-cert">加密证书</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <textarea id="tunnel-encrypt-cert" class="cbi-input-textarea w100" rows="2" required></textarea>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="cbi-value" id="tunnel-local-label-id-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-local-label-id">本端标识ID</label>
+                    <div class="cbi-value-field">
+                        <div class="h100 pt-6">
+                            <button class="cbi-button pointer" id="btn-local-label-id">详情</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value" id="tunnel-remote-label-id-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-remote-label-id">远端标识ID</label>
+                    <div class="cbi-value-field">
+                        <div class="h100 pt-6">
+                            <button class="pointer" id="btn-remote-label-id">详情</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value" id="tunnel-enable-dpd-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-enable-dpd">启动DPD</label>
+                    <div class="cbi-value-field">
+                        <div class="cbi-checkbox">
+                            <input id="tunnel-enable-dpd" type="checkbox" checked>
+                            <label for="tunnel-enable-dpd"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value" id="tunnel-dpd-timeout-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-dpd-timeout">DPD超时</label>
+                    <div class="cbi-value-field">
+                        <div class="cbi-checkbox">
+                            <input id="tunnel-dpd-timeout" type="number" class="cbi-input-text" value="20" placeholder="" min="1" max="3600" required>
+                        </div>
+                        <div class="cbi-value-description">
+                            范围：[1-3600], 单位为秒。
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value" id="tunnel-dpd-interval-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-dpd-interval">DPD间隔</label>
+                    <div class="cbi-value-field">
+                        <div class="cbi-checkbox">
+                            <input id="tunnel-dpd-interval" type="number" class="cbi-input-text" value="86400" placeholder="" min="1" max="86400" required>
+                        </div>
+                        <div class="cbi-value-description">
+                            范围：[1-86400], 单位为秒。
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value" id="tunnel-nat-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-nat">NAT穿越</label>
+                    <div class="cbi-value-field">
+                        <div class="cbi-checkbox">
+                            <input id="tunnel-nat" type="checkbox">
+                            <label for="tunnel-net"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value" id="tunnel-ike-sa-timeout-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-ike-sa-timeout">IKE-SA超时</label>
+                    <div class="cbi-value-field">
+                        <div class="cbi-checkbox">
+                            <input id="tunnel-ike-sa-timeout" type="number" class="cbi-input-text" value="3000" placeholder="" min="1" max="86400" required>
+                        </div>
+                        <div class="cbi-value-description">
+                            范围：[1-86400], 单位为秒。实际使用建议值不低于3000。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="cbi-tunnel-step-2" class="cbi-section cbi-tblsection" data-tab="step-2" data-tab-title="第二阶段" data-tab-active="false">
+            <h3>第二阶段</h3>
+            <div class="cbi-section-node" data-section-id="step-2">
+                <div class="cbi-value" id="tunnel-child-name-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-child-name">隧道名称</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="tunnel-child-name" type="text" class="cbi-input-text" value="" placeholder="" maxlength="31" required>
+                        </div>
+                        <div class="cbi-value-description">
+                            限制字节数不能超过31个字符。不能包含除“-”或“_”之外的特殊字符。不能输入中文。
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value" id="tunnel-child-encap-mode-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-child-encap-mode">封装模式</label>
+                    <div class="cbi-value-field">
+                        <div class="d-flex w100 pt-6">
+                            <div class="cbi-radio">
+                                <input id="tunnel-encap-mode-transfer" type="radio" name="tunnel-child-encap-mode" value="transport" checked>
+                                <label class="pointer" for="tunnel-encap-mode-transfer">传输模式</label>
+                            </div>
+                            <div class="cbi-radio">
+                                <input id="tunnel-encap-mode-tunnel" type="radio" name="tunnel-child-encap-mode" value="tunnel">
+                                <label class="pointer" for="tunnel-encap-mode-tunnel">隧道模式</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value" id="tunnel-child-local-network-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-child-local-network">本端子网/掩码</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="tunnel-child-local-network" type="text" class="cbi-input-text" value="" placeholder="" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value" id="tunnel-child-remote-network-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-child-remote-network">远端子网/掩码</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="tunnel-child-remote-network" type="text" class="cbi-input-text" value="" placeholder="" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value" id="tunnel-esp-algorithm-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-esp-algorithm-title">ESP算法套件</label>
+                    <div class="cbi-value-field">
+                        <div class="h100 pt-6">
+                            <label id="tunnel-esp-algorithm-title"></label>
+                            <button class="pointer" id="btn-tunnel-esp-algorithm">算法列表</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value" id="tunnel-child-ipsec-sa-timeout-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-child-ipsec-sa-timeout">IPsec-SA超时</label>
+                    <div class="cbi-value-field">
+                        <div class="cbi-checkbox">
+                            <input id="tunnel-child-ipsec-sa-timeout" type="number" class="cbi-input-text" value="300" placeholder="" min="0" max="28800" required>
+                        </div>
+                        <div class="cbi-value-description">
+                            范围：[0-28800], 单位为秒。实际使用建议值不低于300。
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value" id="tunnel-child-reconn-string-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-child-reconn-string">重协商字节</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="tunnel-child-reconn-string" type="text" class="cbi-input-text" value="500000000" placeholder="" required>
+                        </div>
+                        <div class="cbi-value-description">
+                            范围：[1-4398046511104], 单位为bytes, 实际使用建议值不低于500000000。
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value" id="tunnel-child-reconn-pack-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-child-reconn-pack">重协商数据包</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="tunnel-child-reconn-pack" type="text" class="cbi-input-text" value="1000000" placeholder="" required>
+                        </div>
+                        <div class="cbi-value-description">
+                            范围：[1-4294967296], 单位为个, 实际使用建议值不低于1000000。
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value" id="tunnel-description-section" data-widget="CBI.Value">
+                    <label class="cbi-value-title" for="tunnel-description">隧道描述</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <textarea id="tunnel-description" type="text" class="cbi-input-textarea" value="" placeholder=""></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cbi-page-actions control-group">
+        <button class="cbi-button cbi-button-return" href='<%=luci.dispatcher.build_url("admin/network/ipsec")%>'>返回</button>
+        <button class="cbi-button cbi-button-save cbi-button-save-tunnel">保存</button>
+    </div>
+
+    <div id="ike-algorithm-modal" class="modal-window">
+        <div class="modal cbi-modal" role="dialog" aria-modal="true">
+            <h4>IKE算法套件</h4>
+
+            <div class="cbi-section-node">
+                <div class="cbi-value" data-widget="CBI.Value">
+                    <label class="cbi-value-title">密钥交换算法</label>
+                    <div class="cbi-value-field">
+                        <div class="d-flex w100 pt-6">
+                            <div class="cbi-radio w50 m-0">
+                                <input id="ike-sm1" type="radio" name="tunnel-key-transfer-algorithm" value="sm1" checked>
+                                <label for="ike-sm1">sm1</label>
+                            </div>
+                            <div class="cbi-radio w50 m-0">
+                                <input id="ike-sm4" type="radio" name="tunnel-key-transfer-algorithm" value="sm4">
+                                <label for="ike-sm4">sm4</label>
+                            </div>
+                        </div>
+                        <div class="d-flex w100 pt-6">
+                            <div class="cbi-radio w50 m-0">
+                                <input id="ike-key-transfer-algorithm-other1" type="radio" name="tunnel-key-transfer-algorithm" value="other1">
+                                <label for="ike-key-transfer-algorithm-other1">密钥交换算法 1</label>
+                            </div>
+                            <div class="cbi-radio w50 m-0">
+                                <input id="ike-key-transfer-algorithm-other2" type="radio" name="tunnel-key-transfer-algorithm" value="other2">
+                                <label for="ike-key-transfer-algorithm-other2">密钥交换算法 2</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value"data-widget="CBI.Value">
+                    <label class="cbi-value-title">加密算法</label>
+                    <div class="cbi-value-field">
+                        <div class="d-flex w100 pt-6">
+                            <div class="cbi-radio w50 m-0">
+                                <input id="ike-sm3" type="radio" name="tunnel-encrypt-algorithm" value="sm3" checked>
+                                <label for="ike-sm3">sm3</label>
+                            </div>
+                            <div class="cbi-radio w50 m-0">
+                                <input id="ike-encrypt-algorithm-other1" type="radio" name="tunnel-encrypt-algorithm" value="other1">
+                                <label for="ike-encrypt-algorithm-other1">加密算法 1</label>
+                            </div>
+                        </div>
+                        <div class="d-flex w100 pt-6">
+                            <div class="cbi-radio w50 m-0">
+                                <input id="ike-encrypt-algorithm-other2" type="radio" name="tunnel-encrypt-algorithm" value="other2">
+                                <label for="ike-encrypt-algorithm-other2">加密算法 2</label>
+                            </div>
+                            <div class="cbi-radio w50 m-0">
+                                <input id="ike-encrypt-algorithm-other3" type="radio" name="tunnel-encrypt-algorithm" value="other3">
+                                <label for="ike-encrypt-algorithm-other3">加密算法 3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value"data-widget="CBI.Value">
+                    <label class="cbi-value-title">认证算法</label>
+                    <div class="cbi-value-field">
+                        <div class="d-flex w100 pt-6">
+                            <div class="cbi-radio w50 m-0">
+                                <input id="ike-sm2" type="radio" name="tunnel-verify-algorithm" value="sm2" checked>
+                                <label for="ike-sm2">sm2</label>
+                            </div>
+                            <div class="cbi-radio w50 m-0">
+                                <input id="ike-verify-algorithm-other1" type="radio" name="tunnel-verify-algorithm" value="other1">
+                                <label for="ike-verify-algorithm-other1">认证算法 1</label>
+                            </div>
+                        </div>
+                        <div class="d-flex w100 pt-6">
+                            <div class="cbi-radio w50 m-0">
+                                <input id="ike-verify-algorithm-other2" type="radio" name="tunnel-verify-algorithm" value="other2">
+                                <label for="ike-verify-algorithm-other2">认证算法 2</label>
+                            </div>
+                            <div class="cbi-radio w50 m-0">
+                                <input id="ike-verify-algorithm-other3" type="radio" name="tunnel-verify-algorithm" value="other3">
+                                <label for="ike-verify-algorithm-other3">认证算法 3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <button class="cbi-button cbi-button-modal-close">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="local-label-id-modal" class="modal-window">
+        <div class="modal" role="dialog" aria-modal="true">
+            <h4>本端证书主题名称</h4>
+            <div class="cbi-section-node">
+                <div class="cbi-value"data-widget="CBI.Value">
+                    <label class="cbi-value-title">C (Country)</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="local-label-id-country" type="text" class="cbi-input-text" value="" placeholder="" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value"data-widget="CBI.Value">
+                    <label class="cbi-value-title">ST (State)</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="local-label-id-state" type="text" class="cbi-input-text" value="" placeholder="" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value"data-widget="CBI.Value">
+                    <label class="cbi-value-title">L (Locality)</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="local-label-id-locality" type="text" class="cbi-input-text" value="" placeholder="" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value"data-widget="CBI.Value">
+                    <label class="cbi-value-title">O (Organization)</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="local-label-id-organization" type="text" class="cbi-input-text" value="" placeholder="" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value"data-widget="CBI.Value">
+                    <label class="cbi-value-title">OU (Organizational Unit)</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="local-label-id-ou" type="text" class="cbi-input-text" value="" placeholder="" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value"data-widget="CBI.Value">
+                    <label class="cbi-value-title">CN (Common Name)</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="local-label-id-cn" type="text" class="cbi-input-text" value="" placeholder="" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value"data-widget="CBI.Value">
+                    <label class="cbi-value-title">EMAIL (Email Address)</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="local-label-id-email" type="text" class="cbi-input-text" value="" placeholder="" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <button class="cbi-button cbi-button-modal-close">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="remote-label-id-modal" class="modal-window">
+        <div class="modal" role="dialog" aria-modal="true">
+            <h4>远端证书主题名称</h4>
+            <div class="cbi-section-node">
+                <div class="cbi-value"data-widget="CBI.Value">
+                    <label class="cbi-value-title">C (Country)</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="remote-label-id-country" type="text" class="cbi-input-text" value="" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value"data-widget="CBI.Value">
+                    <label class="cbi-value-title">ST (State)</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="remote-label-id-state" type="text" class="cbi-input-text" value="" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value"data-widget="CBI.Value">
+                    <label class="cbi-value-title">L (Locality)</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="remote-label-id-locality" type="text" class="cbi-input-text" value="" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value"data-widget="CBI.Value">
+                    <label class="cbi-value-title">O (Organization)</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="remote-label-id-organization" type="text" class="cbi-input-text" value="" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value"data-widget="CBI.Value">
+                    <label class="cbi-value-title">OU (Organizational Unit)</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="remote-label-id-ou" type="text" class="cbi-input-text" value="" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value"data-widget="CBI.Value">
+                    <label class="cbi-value-title">CN (Common Name)</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="remote-label-id-cn" type="text" class="cbi-input-text" value="" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value"data-widget="CBI.Value">
+                    <label class="cbi-value-title">EMAIL (Email Address)</label>
+                    <div class="cbi-value-field">
+                        <div>
+                            <input id="remote-label-id-email" type="text" class="cbi-input-text" value="" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <button class="cbi-button cbi-button-modal-close">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="esp-algorithm-modal" class="modal-window">
+        <div class="modal" role="dialog" aria-modal="true">
+            <h4>ESP算法套件</h4>
+            <div class="cbi-section-node">
+                <div class="cbi-value" data-widget="CBI.Value">
+                    <label class="cbi-value-title">加密算法</label>
+                    <div class="cbi-value-field">
+                        <div class="d-flex w100 pt-6">
+                            <div class="cbi-radio w50 m-0">
+                                <input id="esp-sm3" type="radio" name="tunnel-esp-encrypt-algorithm" value="sm3" checked>
+                                <label for="esp-sm3">sm3</label>
+                            </div>
+                            <div class="cbi-radio w50 m-0">
+                                <input id="esp-encrypt-algorithm-other1" type="radio" name="tunnel-esp-encrypt-algorithm" value="other1">
+                                <label for="esp-encrypt-algorithm-other1">加密算法 1</label>
+                            </div>
+                        </div>
+                        <div class="d-flex w100 pt-6">
+                            <div class="cbi-radio w50 m-0">
+                                <input id="esp-encrypt-algorithm-other2" type="radio" name="tunnel-esp-encrypt-algorithm" value="other2">
+                                <label for="esp-encrypt-algorithm-other2">加密算法 2</label>
+                            </div>
+                            <div class="cbi-radio w50 m-0">
+                                <input id="esp-encrypt-algorithm-other3" type="radio" name="tunnel-esp-encrypt-algorithm" value="other3">
+                                <label for="esp-encrypt-algorithm-other3">加密算法 3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbi-value"data-widget="CBI.Value">
+                    <label class="cbi-value-title">认证算法</label>
+                    <div class="cbi-value-field">
+                        <div class="d-flex w100 pt-6">
+                            <div class="cbi-radio w50 m-0">
+                                <input id="esp-sm2" type="radio" name="tunnel-esp-verify-algorithm" value="sm2" checked>
+                                <label for="esp-sm2">sm2</label>
+                            </div>
+                            <div class="cbi-radio w50 m-0">
+                                <input id="esp-verify-algorithm-other1" type="radio" name="tunnel-esp-verify-algorithm" value="other1">
+                                <label for="esp-verify-algorithm-other1">认证算法 1</label>
+                            </div>
+                        </div>
+                        <div class="d-flex w100 pt-6">
+                            <div class="cbi-radio w50 m-0">
+                                <input id="esp-verify-algorithm-other2" type="radio" name="tunnel-esp-verify-algorithm" value="other2">
+                                <label for="esp-verify-algorithm-other2">认证算法 2</label>
+                            </div>
+                            <div class="cbi-radio w50 m-0">
+                                <input id="esp-verify-algorithm-other3" type="radio" name="tunnel-esp-verify-algorithm" value="other3">
+                                <label for="esp-verify-algorithm-other3">认证算法 3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <button class="cbi-button cbi-button-modal-close">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="<%=resource%>/view/ipsec/ipsec.js?v=unknown"></script>
+<script>
+    let global_local_id = '<%= local_id %>';
+    window.addEventListener('load', () => {
+        document.querySelector('#tunnel-name').value = `Tunnel_${Math.floor(Date.now() / 1000)}`;
+        load_local_id(global_local_id);
+        load_ike_algorithm();
+        load_esp_algorithm();
+    });
+</script>
+  
+<%+footer%>

@@ -1,0 +1,14 @@
+{
+	"admin/system/user": {
+		"title": "管理员配置",
+		"order": 2,
+		"action": {
+			"type": "view",
+			"path": "user/user"
+		},
+		"depends": {
+			"acl": [ "luci-app-acl" ],
+			"uci": { "rpcd": true }
+		}
+	}
+}

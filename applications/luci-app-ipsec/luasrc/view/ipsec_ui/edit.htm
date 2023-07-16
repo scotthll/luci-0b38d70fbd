@@ -1,0 +1,23 @@
+<%+header%>
+
+<h1><%:Edit Channel %> #<%= row.s_conn[".name"] %></h1> 
+
+local id: <%= local_id %>
+<br>
+
+<form method="post">
+
+    ID:                     <input type="text" name="row.id" value='<%= row.s_conn[".name"] %>'><br>
+    Name:                   <input type="text" name="row.s_conn.name" value='<%= row.s_conn.name %>'><br>
+    Description:            <input type="text" name="row.s_conn.description" value='<%= row.s_conn.description %>'><br>
+    Local Attribute1:       <input type="text" name="row.s_local.attr1" value='<%= row.s_local.attr1 %>'><br>
+    Local Attribute2:       <input type="text" name="row.s_local.attr2" value='<%= row.s_local.attr2 %>'><br>
+    Remote Attribute1:      <input type="text" name="row.s_remote.attr1" value='<%= row.s_remote.attr1 %>'><br>
+    Remote Attribute2:      <input type="text" name="row.s_remote.attr2" value='<%= row.s_remote.attr2 %>'><br>
+    Children Attribute1:    <input type="text" name="row.s_child.attr1" value='<%= row.s_child.attr1 %>'><br>
+    Children Attribute2:    <input type="text" name="row.s_child.attr2" value='<%= row.s_child.attr2 %>'><br>
+    
+    <input type="submit" name="action.save" value="Save">
+</form>
+
+<%+footer%>

@@ -1,0 +1,210 @@
+<%+header%>
+
+<link rel="stylesheet" href="<%=resource%>/view/ipsec/ipsec.css">
+
+<div id="view">
+    <div id="cbi-ipsec" class="cbi-map">
+        <h2 name="content">IPSec</h2>
+        <div class="cbi-map-descr">IPSec 隧道列表</div>
+
+        <div class="cbi-page-actions control-group">
+            <div>
+                <input type="text" id="input_search_keyword" placeholder="搜索关键字">
+            </div>
+        </div>
+
+        <div class="cbi-map-tabbed" data-initialized="true">
+            <div class="cbi-section cbi-tblsection">
+                <table class="table cbi-section-table" id="table-ipsec-tunnels">
+                    <thead>
+                        <tr class="tr cbi-section-table-titles anonymous">
+                            <th class="th cbi-section-table-cell th-checkbox" data-widget="CBI.Value" style="width: 3%;">
+                                <div class="cbi-checkbox">
+                                    <input type="checkbox" id="select_all">
+                                    <label for="select_all" class="label-for-checkbox"></label>
+                                </div>
+                            </th>
+                            <th class="th cbi-section-table-cell" data-widget="CBI.Value" style="width: 5%;">序号</th>
+                            <th class="th cbi-section-table-cell" data-widget="CBI.Value" style="width: 15%;">隧道类型</th>
+                            <th class="th cbi-section-table-cell" data-widget="CBI.Value" style="width: 30%;">隧道名称</th>
+                            <th class="th cbi-section-table-cell" data-widget="CBI.Value" style="width: 10%;">本端地址</th>
+                            <th class="th cbi-section-table-cell" data-widget="CBI.Value" style="width: 10%;">对端地址</th>
+                            <th class="th cbi-section-table-cell" data-widget="CBI.Value" style="width: 10%;">协商状态</th>
+                            <th class="th cbi-section-table-cell cbi-section-actions"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% 
+                            local isempty = true;
+                            for i, row in ipairs(rows) do 
+                                isempty = false;
+                        %>
+                        <tr class="tr cbi-section-table-row">
+                            <td class="td cbi-checkbox-field" style="width: 3%;">
+                                <div class="cbi-checkbox">
+                                    <input type="checkbox" value='<%= row.s_conn[".name"] %>' <% if row.state == "Stopped" then -%>disabled<% end %>>
+                                    <label></label>
+                                </div>
+                                <div>
+                                    <% if row.s_conn.type ~= "manual_tunnel" then -%>
+                                    <input type="hidden" class="remote-params" value='{"remote_id": "<%= row.s_remote.id %>", "remote_addrs": "<%= row.s_conn.remote_addrs %>"}'>
+                                    <input type="hidden" class="child-params" value='{"child_name": "<%= row.s_child.name %>", "child_local_ts": "<%= row.s_child.local_ts %>", "child_remote_ts": "<%= row.s_child.remote_ts %>", "child_rekey_time": "<%= row.s_child.rekey_time %>", "child_rekey_bytes": "<%= row.s_child.rekey_bytes %>", "child_rekey_packets": "<%= row.s_child.rekey_packets %>"}'> 
+                                    <% else %>
+                                    <input type="hidden" class="remote-params" value=''>
+                                    <input type="hidden" class="child-params" value='{}'> 
+                                    <%- end %>
+                                </div>
+                            </td>
+                            <td class="td cbi-value-field s-number" style="width: 5%"><%= i %></td>
+                            <td class="td cbi-value-field" style="width: 15%;">
+                                <% if row.s_conn.type ~= "manual_tunnel" then -%>
+                                    密钥协商隧道
+                                <% else %>
+                                    手工隧道
+                                <%- end %>
+                            </td>
+                            <td class="td cbi-value-field" style="width: 30%;"><%= row.s_conn[".name"] %></td>
+                            <td class="td cbi-value-field" style="width: 10%;"><%= row.s_conn.local_addrs %></td>
+                            <td class="td cbi-value-field" style="width: 10%;"><%= row.s_conn.remote_addrs %></td>
+                            <td class="td cbi-value-field" style="width: 10%;">
+                                <% if row.state == 'Completed' then -%>
+                                    协商完成
+                                <%- end %>
+                                <% if row.state == 'Connecting' then -%>
+                                    正在协商
+                                <%- end %>
+                                <% if row.state == 'Not_started' then -%>
+                                    未发起协商
+                                <%- end %>
+                            </td>
+                            <td class="td cbi-section-table-cell nowrap cbi-section-actions">
+                                <div class="pull-right">
+                                    <% if row.s_conn.type ~= 'manual_tunnel' then -%>
+                                        <button class="cbi-button cbi-button-neutral cbi-button-action detail" title="详情">详情</button>
+                                    <%- end %>
+
+                                    <% if not row.s_conn.remote_addrs or not row.s_remote.id then -%>
+                                    <button class="cbi-button cbi-button-neutral cbi-button-action disabled" title="启动">启动</button>
+                                    <% else %>
+                                    <button class="cbi-button cbi-button-neutral cbi-button-action start" title="启动">启动</button>
+                                    <%- end %>
+                                    
+                                    <button class="cbi-button cbi-button-neutral cbi-button-action edit" href='<%=luci.dispatcher.build_url("admin/network/ipsec/edit", row.s_conn[".name"])%>' title="编辑">编辑</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <% end %>
+                        <% if isempty then -%>
+                        <tr class="tr cbi-section-table-row placeholder">
+                            <td class="td"><em><%:This section contains no values yet%></em></td>
+                        </tr>
+                        <%- end -%>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="cbi-page-actions control-group">
+        
+        <button class="add-tunnel-dropdown">
+            <div class="dd-button cbi-button cbi-button-add" id="btn_add_tunnel">添加</div>
+        
+            <input type="checkbox" class="dd-input" id="check_add_tunnel">
+        
+            <ul class="dd-menu">
+                <li href='<%=luci.dispatcher.build_url("admin/network/ipsec/new")%>'>密钥协商隧道</li>
+                <li href='<%=luci.dispatcher.build_url("admin/network/ipsec/new_manual")%>'>手工隧道</li>
+            </ul>
+        </button>
+        <button class="cbi-button cbi-button-delete">删除</button>
+        <button class="cbi-button cbi-button-copy">复制</button>
+        <input type="file" class="d-none" id="import_config_file">
+        <button class="cbi-button cbi-button-import">导入</button>
+        <button class="cbi-button cbi-button-export">导出</button>
+        <button class="cbi-button cbi-button-start">启动</button>
+        <button class="cbi-button cbi-button-disable">禁用</button>
+    </div>
+
+    <div id="tunnel-detail-modal" class="modal-window">
+        <div class="modal cbi-modal" role="dialog" aria-modal="true">
+            <h4>隧道详情</h4>
+            <div class="cbi-section-node">
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr class="tr">
+                                <th class="td left" width="33%">协商详情</th>
+                                <th class="td left">结果</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="tr">
+                                <td class="td left" width="33%">SA交换</td>
+                                <td class="td left">
+                                    <div class="d-flex">
+                                        <div class="lamp" id="status_lamp_1"></div>
+                                        <label for="status_lamp_1">未完成</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="tr">
+                                <td class="td left" width="33%">KE交换</td>
+                                <td class="td left">
+                                    <div class="d-flex">
+                                        <div class="lamp" id="status_lamp_2"></div>
+                                        <label for="status_lamp_2">未完成</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="tr">
+                                <td class="td left" width="33%">ID交换</td>
+                                <td class="td left">
+                                    <div class="d-flex">
+                                        <div class="lamp" id="status_lamp_3"></div>
+                                        <label for="status_lamp_3">未完成</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="tr">
+                                <td class="td left" width="33%">IPsec-SA建立</td>
+                                <td class="td left">
+                                    <div class="d-flex">
+                                        <div class="lamp" id="status_lamp_4"></div>
+                                        <label for="status_lamp_4">未完成</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="tr">
+                                <td class="td left" width="33%">IPsec协商结果</td>
+                                <td class="td left">
+                                    <div class="d-flex">
+                                        <div class="lamp" id="status_lamp_5"></div>
+                                        <label for="status_lamp_5">未完成</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="right">
+                <button class="cbi-button cbi-button-modal-close">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="<%=resource%>/view/ipsec/ipsec.js?v=unknown"></script>
+
+<script>
+    window.addEventListener('load', () => {
+        let tbody = document.querySelector('#table-ipsec-tunnels tbody');
+        if (tbody.scrollHeight > tbody.clientHeight) {
+            document.querySelector('#table-ipsec-tunnels thead').style.width = 'calc(100% - 1em)';
+        } else {
+            document.querySelector('#table-ipsec-tunnels thead').style.width = '100%';
+        }
+    });
+</script>
+<%+footer%>

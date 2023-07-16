@@ -1,0 +1,316 @@
+<%+header%>
+
+<link rel="stylesheet" href="<%=resource%>/view/ipsec/ipsec.css">
+
+<div id="view">
+    <div id="cbi-dynamic-tunnel" class="cbi-map">
+        <h2 name="content">手工隧道策略</h2>
+        <div class="cbi-map-descr"></div>
+    </div>
+
+    <div id="cbi-manual-tunnel-section" class="cbi-section cbi-tblsection mt-40">
+        <div class="cbi-value" id="tunnel-name-section" data-widget="CBI.Value">
+            <label class="cbi-value-title" for="tunnel-name">隧道名称</label>
+            <div class="cbi-value-field">
+                <div>
+                    <input id="tunnel-name" type="text" class="cbi-input-text" value="" placeholder="" maxlength="31" required>
+                </div>
+                <div class="cbi-value-description">
+                    限制字节数不能超过31个字符。不能包含除“-”或“_”之外的特殊字符。不能输入中文。
+                </div>
+            </div>
+        </div>
+        <div class="cbi-value" id="tunnel-local-address-section" data-widget="CBI.Value">
+            <label class="cbi-value-title" for="tunnel-local-address">本端地址</label>
+            <div class="cbi-value-field">
+                <div>
+                    <input id="tunnel-local-address" type="text" class="cbi-input-text" value="" placeholder="" required>
+                </div>
+            </div>
+        </div>
+        <div class="cbi-value" id="tunnel-remote-address-section" data-widget="CBI.Value">
+            <label class="cbi-value-title" for="tunnel-remote-address">远端地址</label>
+            <div class="cbi-value-field">
+                <div>
+                    <input id="tunnel-remote-address" type="text" class="cbi-input-text" value="" placeholder="" required>
+                </div>
+            </div>
+        </div>
+        <div class="cbi-value" id="tunnel-input-spi-section" data-widget="CBI.Value">
+            <label class="cbi-value-title" for="tunnel-input-spi">入SPI</label>
+            <div class="cbi-value-field">
+                <div class="cbi-checkbox">
+                    <input id="tunnel-input-spi" type="number" class="cbi-input-text" value="40961" placeholder="" min="4091" max="65535" required>
+                </div>
+                <div class="cbi-value-description">
+                    范围：[4091-65535], 建议从40961开始取值。
+                </div>
+            </div>
+        </div>
+        <div class="cbi-value" id="tunnel-inbound-encrypt-algorithm-section" data-widget="CBI.Value">
+            <label class="cbi-value-title" for="tunnel-inbound-encrypt-algorithm">INBOUND加密算法</label>
+            <div class="cbi-value-field">
+                <div class="cbi-checkbox">
+                    <label id="tunnel-manual-inbound-encrypt-algorithm-title"></label>
+                    <button class="pointer" id="btn-tunnel-manual-inbound-encrypt-algorithm">算法列表</button>
+                </div>
+            </div>
+        </div>
+        <div class="cbi-value" id="tunnel-inbound-encrypt-key-section" data-widget="CBI.Value">
+            <label class="cbi-value-title" for="tunnel-inbound-encrypt-key">INBOUND加密密钥</label>
+            <div class="cbi-value-field">
+                <div class="cbi-checkbox">
+                    <textarea id="tunnel-inbound-encrypt-key" type="text" class="cbi-input-textarea" required></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="cbi-value" id="tunnel-inbound-verify-algorithm-section" data-widget="CBI.Value">
+            <label class="cbi-value-title" for="tunnel-inbound-verify-algorithm">INBOUND认证算法</label>
+            <div class="cbi-value-field">
+                <div class="cbi-checkbox">
+                    <label id="tunnel-manual-inbound-verify-algorithm-title"></label>
+                    <button class="pointer" id="btn-tunnel-manual-inbound-verify-algorithm">算法列表</button>
+                </div>
+            </div>
+        </div>
+        <div class="cbi-value" id="tunnel-inbound-verify-key-section" data-widget="CBI.Value">
+            <label class="cbi-value-title" for="tunnel-inbound-verify-key">INBOUND认证密钥</label>
+            <div class="cbi-value-field">
+                <div class="cbi-checkbox">
+                    <textarea id="tunnel-inbound-verify-key" type="text" class="cbi-input-textarea" required></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="cbi-value" id="tunnel-output-spi-section" data-widget="CBI.Value">
+            <label class="cbi-value-title" for="tunnel-output-spi">出SPI</label>
+            <div class="cbi-value-field">
+                <div class="cbi-checkbox">
+                    <input id="tunnel-output-spi" type="number" class="cbi-input-text" value="40961" placeholder="" min="4091" max="65535" required>
+                </div>
+                <div class="cbi-value-description">
+                    范围：[4091-65535], 建议从40961开始取值。
+                </div>
+            </div>
+        </div>
+        <div class="cbi-value" id="tunnel-outbound-encrypt-algorithm-section" data-widget="CBI.Value">
+            <label class="cbi-value-title" for="tunnel-outbound-encrypt-algorithm">OUTBOUND加密算法</label>
+            <div class="cbi-value-field">
+                <div class="cbi-checkbox">
+                    <label id="tunnel-manual-outbound-encrypt-algorithm-title"></label>
+                    <button class="pointer" id="btn-tunnel-manual-outbound-encrypt-algorithm">算法列表</button>
+                </div>
+            </div>
+        </div>
+        <div class="cbi-value" id="tunnel-outbound-encrypt-key-section" data-widget="CBI.Value">
+            <label class="cbi-value-title" for="tunnel-outbound-encrypt-key">OUTBOUND加密密钥</label>
+            <div class="cbi-value-field">
+                <div class="cbi-checkbox">
+                    <textarea id="tunnel-outbound-encrypt-key" type="text" class="cbi-input-textarea" required></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="cbi-value" id="tunnel-outbound-verify-algorithm-section" data-widget="CBI.Value">
+            <label class="cbi-value-title" for="tunnel-outbound-verify-algorithm">OUTBOUND认证算法</label>
+            <div class="cbi-value-field">
+                <div class="cbi-checkbox">
+                    <label id="tunnel-manual-outbound-verify-algorithm-title"></label>
+                    <button class="pointer" id="btn-tunnel-manual-outbound-verify-algorithm">算法列表</button>
+                </div>
+            </div>
+        </div>
+        <div class="cbi-value" id="tunnel-outbound-verify-key-section" data-widget="CBI.Value">
+            <label class="cbi-value-title" for="tunnel-outbound-verify-key">OUTBOUND认证密钥</label>
+            <div class="cbi-value-field">
+                <div class="cbi-checkbox">
+                    <textarea id="tunnel-outbound-verify-key" type="text" class="cbi-input-textarea" required></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="cbi-value" id="tunnel-child-local-network-section" data-widget="CBI.Value">
+            <label class="cbi-value-title" for="tunnel-child-local-network">本端子网/掩码</label>
+            <div class="cbi-value-field">
+                <div>
+                    <input id="tunnel-child-local-network" type="text" class="cbi-input-text" value="" placeholder="" required>
+                </div>
+            </div>
+        </div>
+        <div class="cbi-value" id="tunnel-child-remote-network-section" data-widget="CBI.Value">
+            <label class="cbi-value-title" for="tunnel-child-remote-network">远端子网/掩码</label>
+            <div class="cbi-value-field">
+                <div>
+                    <input id="tunnel-child-remote-network" type="text" class="cbi-input-text" value="" placeholder="" required>
+                </div>
+            </div>
+        </div>
+        <div class="cbi-value" id="tunnel-nat-section" data-widget="CBI.Value">
+            <label class="cbi-value-title" for="tunnel-nat">NAT穿越</label>
+            <div class="cbi-value-field">
+                <div class="cbi-checkbox">
+                    <input id="tunnel-nat" type="checkbox">
+                    <label for="tunnel-net"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cbi-page-actions control-group">
+        <button class="cbi-button cbi-button-return" href='<%=luci.dispatcher.build_url("admin/network/ipsec")%>'>返回</button>
+        <button class="cbi-button cbi-button-save cbi-button-save-manual-tunnel">保存</button>
+    </div>
+
+    <div id="manual-tunnel-outbound-encrypt-algorithm-modal" class="modal-window">
+        <div class="modal" role="dialog" aria-modal="true">
+            <h4>手工隧道OUTBOUND加密算法</h4>
+            <div class="cbi-section-node">
+                <div class="cbi-value" data-widget="CBI.Value">
+                    <label class="cbi-value-title">加密算法</label>
+                    <div class="cbi-value-field">
+                        <div class="d-flex w100 pt-6">
+                            <div class="cbi-radio w50 m-0">
+                                <input id="outbound-encrypt-algorithm-sm3" type="radio" name="tunnel-outbound-encrypt-algorithm" value="sm3" checked>
+                                <label for="outbound-encrypt-algorithm-sm3">sm3</label>
+                            </div>
+                            <div class="cbi-radio w50 m-0">
+                                <input id="outbound-encrypt-algorithm-other1" type="radio" name="tunnel-outbound-encrypt-algorithm" value="other1">
+                                <label for="outbound-encrypt-algorithm-other1">加密算法 1</label>
+                            </div>
+                        </div>
+                        <div class="d-flex w100 pt-6">
+                            <div class="cbi-radio w50 m-0">
+                                <input id="outbound-encrypt-algorithm-other2" type="radio" name="tunnel-outbound-encrypt-algorithm" value="other2">
+                                <label for="outbound-encrypt-algorithm-other2">加密算法 2</label>
+                            </div>
+                            <div class="cbi-radio w50 m-0">
+                                <input id="outbound-encrypt-algorithm-other3" type="radio" name="tunnel-outbound-encrypt-algorithm" value="other3">
+                                <label for="outbound-encrypt-algorithm-other3">加密算法 3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <button class="cbi-button cbi-button-modal-close">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="manual-tunnel-outbound-verify-algorithm-modal" class="modal-window">
+        <div class="modal" role="dialog" aria-modal="true">
+            <h4>手工隧道OUTBOUND认证算法</h4>
+            <div class="cbi-section-node">
+                <div class="cbi-value" data-widget="CBI.Value">
+                    <label class="cbi-value-title">认证算法</label>
+                    <div class="cbi-value-field">
+                        <div class="d-flex w100 pt-6">
+                            <div class="cbi-radio w50 m-0">
+                                <input id="outbound-verify-algorithm-sm2" type="radio" name="tunnel-outbound-verify-algorithm" value="sm2" checked>
+                                <label for="outbound-verify-algorithm-sm2">sm2</label>
+                            </div>
+                            <div class="cbi-radio w50 m-0">
+                                <input id="outbound-verify-algorithm-other1" type="radio" name="tunnel-outbound-verify-algorithm" value="other1">
+                                <label for="outbound-verify-algorithm-other1">认证算法 1</label>
+                            </div>
+                        </div>
+                        <div class="d-flex w100 pt-6">
+                            <div class="cbi-radio w50 m-0">
+                                <input id="outbound-verify-algorithm-other2" type="radio" name="tunnel-outbound-verify-algorithm" value="other2">
+                                <label for="outbound-verify-algorithm-other2">认证算法 2</label>
+                            </div>
+                            <div class="cbi-radio w50 m-0">
+                                <input id="outbound-verify-algorithm-other3" type="radio" name="tunnel-outbound-verify-algorithm" value="other3">
+                                <label for="outbound-verify-algorithm-other3">认证算法 3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <button class="cbi-button cbi-button-modal-close">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="manual-tunnel-inbound-encrypt-algorithm-modal" class="modal-window">
+        <div class="modal" role="dialog" aria-modal="true">
+            <h4>手工隧道INBOUND加密算法</h4>
+            <div class="cbi-section-node">
+                <div class="cbi-value" data-widget="CBI.Value">
+                    <label class="cbi-value-title">认证算法</label>
+                    <div class="cbi-value-field">
+                        <div class="d-flex w100 pt-6">
+                            <div class="cbi-radio w50 m-0">
+                                <input id="manual-inbound-encrypt-algorithm-sm3" type="radio" name="tunnel-inbound-encrypt-algorithm" value="sm3" checked>
+                                <label for="manual-inbound-encrypt-algorithm-sm3">sm3</label>
+                            </div>
+                            <div class="cbi-radio w50 m-0">
+                                <input id="manual-inbound-encrypt-algorithm-other1" type="radio" name="tunnel-inbound-encrypt-algorithm" value="other1">
+                                <label for="manual-inbound-encrypt-algorithm-other1">认证算法 1</label>
+                            </div>
+                        </div>
+                        <div class="d-flex w100 pt-6">
+                            <div class="cbi-radio w50 m-0">
+                                <input id="manual-inbound-encrypt-algorithm-other2" type="radio" name="tunnel-inbound-encrypt-algorithm" value="other2">
+                                <label for="manual-inbound-encrypt-algorithm-other2">认证算法 2</label>
+                            </div>
+                            <div class="cbi-radio w50 m-0">
+                                <input id="manual-inbound-encrypt-algorithm-other3" type="radio" name="tunnel-inbound-encrypt-algorithm" value="other3">
+                                <label for="manual-inbound-encrypt-algorithm-other3">认证算法 3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <button class="cbi-button cbi-button-modal-close">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="manual-tunnel-inbound-verify-algorithm-modal" class="modal-window">
+        <div class="modal" role="dialog" aria-modal="true">
+            <h4>手工隧道INBOUND认证算法</h4>
+            <div class="cbi-section-node">
+                <div class="cbi-value" data-widget="CBI.Value">
+                    <label class="cbi-value-title">认证算法</label>
+                    <div class="cbi-value-field">
+                        <div class="d-flex w100 pt-6">
+                            <div class="cbi-radio w50 m-0">
+                                <input id="manual-inbound-verify-algorithm-sm2" type="radio" name="tunnel-inbound-verify-algorithm" value="sm2" checked>
+                                <label for="manual-inbound-verify-algorithm-sm2">sm2</label>
+                            </div>
+                            <div class="cbi-radio w50 m-0">
+                                <input id="manual-inbound-verify-algorithm-other1" type="radio" name="tunnel-inbound-verify-algorithm" value="other1">
+                                <label for="manual-inbound-verify-algorithm-other1">认证算法 1</label>
+                            </div>
+                        </div>
+                        <div class="d-flex w100 pt-6">
+                            <div class="cbi-radio w50 m-0">
+                                <input id="manual-inbound-verify-algorithm-other2" type="radio" name="tunnel-inbound-verify-algorithm" value="other2">
+                                <label for="manual-inbound-verify-algorithm-other2">认证算法 2</label>
+                            </div>
+                            <div class="cbi-radio w50 m-0">
+                                <input id="manual-inbound-verify-algorithm-other3" type="radio" name="tunnel-inbound-verify-algorithm" value="other3">
+                                <label for="manual-inbound-verify-algorithm-other3">认证算法 3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <button class="cbi-button cbi-button-modal-close">关闭</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="<%=resource%>/view/ipsec/ipsec.js?v=unknown"></script>
+
+<script>
+    window.addEventListener('load', () => {
+        document.querySelector('#tunnel-name').value = `Manual_Tunnel_${Math.floor(Date.now() / 1000)}`;
+        load_manual_algorithm();
+    });
+</script>
+
+<%+footer%>

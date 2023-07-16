@@ -1,0 +1,3 @@
+config ca 'ca'
+    option caStatus 'no'
+    option caName '4444'

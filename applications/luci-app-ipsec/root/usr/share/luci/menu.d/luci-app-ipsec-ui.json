@@ -1,0 +1,14 @@
+{
+	"admin/network/ipsec_ui": {
+		"title": "IPSec_UI",
+		"order": 70,
+		"action": {
+			"type": "call",
+			"module": "luci.controller.ipsec_ui",
+			"function": "render_overview"
+		},
+		"depends": {
+			"acl": [ "luci-mod-network-config" ]
+		}
+	}
+}

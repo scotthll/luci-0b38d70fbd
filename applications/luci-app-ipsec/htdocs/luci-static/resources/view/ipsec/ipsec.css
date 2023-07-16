@@ -1,0 +1,171 @@
+.d-none {
+    display: none !important;
+}
+.d-flex {
+    display: flex !important;
+}
+.h100 {
+    height: 100%;
+}
+.w100 {
+    width: 100%;
+}
+.w50 {
+    width: 50%;
+}
+.pt-6 {
+    padding-top: 6px;
+}
+.m-0 {
+    margin: 0;
+}
+.mt-40 {
+    margin-top: 40px;
+}
+.pull-right {
+    float: right;
+}
+.pull-left {
+    float: left;
+}
+.pointer {
+    cursor: pointer;
+}
+.cbi-button-action.disabled {
+    background-color: grey;
+}
+.cbi-input-text:disabled {
+    background: lightgrey;
+}
+input[type="number"], textarea.cbi-input-textarea {
+    border-bottom: 2px solid transparent;
+    box-shadow: inset 0 0 1px var(--main-dark-color);
+    line-height: 1.5rem;
+    min-height: calc(1.5rem + 2px);
+    min-width: 20rem;
+    border-radius: 0.25em;
+    padding: 0 0.2rem;
+}
+textarea.cbi-input-textarea {
+    max-width: 20rem;
+    margin: 0;
+}
+.cbi-radio {
+    margin-right: 20px;
+}
+.cbi-radio input[type=radio] {
+    appearance: auto;
+}
+
+#table-ipsec-tunnels tbody {
+    display: block;
+    height: 500px;
+    overflow: auto;
+}
+#table-ipsec-tunnels thead, #table-ipsec-tunnels tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+.th-checkbox {
+    width: 70px;
+}
+#input_search_keyword {
+    height: 28px;
+}
+.keyword-matched {
+    background-color: var(--main-bright-color) !important;
+    color: var(--secondary-bright-color) !important;
+}
+label.label-for-checkbox {
+    font-weight: 700;
+}
+td.cbi-section-actions .cbi-button-action {
+    flex: none;
+    width: 56px;
+}
+.add-tunnel-dropdown {
+    display: inline-block;
+    position: relative;
+}
+.dd-button {
+    line-height: 2em;
+    display: inline-block;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+input[type="checkbox"].dd-input {
+    display: none;
+}
+.dd-menu {
+    position: absolute;
+    top: -95px;
+    left: 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0;
+    margin: 2px 0 0 0;
+    box-shadow: 0 0 6px 0 rgba(0,0,0,0.1);
+    background-color: #ffffff;
+    list-style-type: none;
+}
+.dd-input + .dd-menu {
+    display: none;
+} 
+.dd-input:checked + .dd-menu {
+    display: block;
+} 
+.dd-menu li {
+    padding: 10px 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    text-align: left;
+    color: #000;
+    list-style: none;
+}
+.dd-menu li:hover {
+    background-color: #fff;
+    color: var(--main-bright-color);
+}
+.lamp {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: red;
+    margin-right: 15px;
+}
+.lamp.success {
+    background-color: green;
+}
+
+.modal-window {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: -10000px;
+    right: 10000px;
+    background: rgba(0,0,0,0.7);
+    z-index: 10000;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    transition: opacity .125s ease-in;
+    opacity: 0;
+}
+.modal-window.show {
+    left: 0;
+    right: 0;
+    opacity: 1;
+    visibility: visible;
+}
+.modal-window .modal {
+    max-width: 1300px;
+    width: 80%;
+    background: var(--secondary-bright-color);
+    box-shadow: 0 0 3px 1px var(--main-bright-color);
+    border-radius: 0.25em;
+    display: flex;
+    flex-direction: column;
+    margin: 10% auto 5rem;
+    padding: 0.5em;
+}

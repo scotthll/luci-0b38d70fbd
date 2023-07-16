@@ -1,0 +1,23 @@
+<%+header%>
+
+<h1><%:New Manual Channel%></h1> 
+
+local id: <%= local_id %>
+<br>
+
+<form method="post">
+
+    ID:                     <input type="text" name="row.id"><br>
+    Name:                   <input type="text" name="row.s_conn.name"><br>
+    Description:            <input type="text" name="row.s_conn.description"><br>
+    Local Attribute1:       <input type="text" name="row.s_local.attr1"><br>
+    Local Attribute2:       <input type="text" name="row.s_local.attr2"><br>
+    Remote Attribute1:      <input type="text" name="row.s_remote.attr1"><br>
+    Remote Attribute2:      <input type="text" name="row.s_remote.attr2"><br>
+    Children Attribute1:    <input type="text" name="row.s_child.attr1"><br>
+    Children Attribute2:    <input type="text" name="row.s_child.attr2"><br>
+    
+    <input type="submit" name="action.save" value="Save">
+</form>
+
+<%+footer%>
